@@ -2,13 +2,15 @@
 
 VO2Cue is a VO2-focused 4x4 interval coach for Apple Watch, swimming, and eyes-free training.
 
+V1.0 is implemented and running in TestFlight for iOS 17+ and watchOS 10+. Read the [VO2Cue Privacy Policy](https://greggroll.github.io/vo2cue/).
+
 ## Product Positioning
 
 VO2Cue helps athletes complete Norwegian-style 4x4 sessions without staring at a clock. The app is designed around Apple Watch haptics first, with optional tones and voice cues for people who train in the pool, on a treadmill, on a bike, or anywhere a visual timer gets in the way.
 
-The launch version is planned as a $1.99 paid iOS app with an independent Apple Watch companion.
+The launch version is designed as a complete paid iOS app with an independent Apple Watch companion.
 
-## V1 Goals
+## V1 Features
 
 - Run a default 4x4 VO2 session: warmup, four hard intervals, active recovery periods, and optional cooldown.
 - Let users customize work duration, rest duration, loop count, countdown length, cue labels, warmup, and cooldown.
@@ -20,7 +22,7 @@ The launch version is planned as a $1.99 paid iOS app with an independent Apple 
 
 ## Default Workout
 
-The planned default workout follows a classic 4x4 structure:
+The default workout follows a classic 4x4 structure:
 
 - Warmup: 10 minutes
 - Hard interval: 4 minutes
@@ -28,7 +30,7 @@ The planned default workout follows a classic 4x4 structure:
 - Repeats: 4
 - Cooldown: optional
 
-Users will be able to customize the default session or create their own profiles.
+Users can customize the default session or create their own profiles.
 
 ## Cue System
 
@@ -38,13 +40,13 @@ VO2Cue is designed for workouts where looking at the screen is inconvenient or i
 - Tones distinguish countdown, start, sprint, recovery, halfway, and finish states.
 - Voice cues can announce phrases such as "3, 2, 1", "Sprint", "Recover", and "Workout complete".
 - Cue labels are customizable so users can choose words like Start, Sprint, Hard, Rest, Recover, Easy, or Jog.
-- Future releases may add premium voice packs and tone packs.
+- Cue settings can be customized per workout profile.
 
 ## Accessibility
 
 The core accessibility promise is eyes-free completion: a user should be able to start a workout and finish it without reading the screen.
 
-Planned accessibility support includes:
+V1 accessibility support includes:
 
 - VoiceOver-friendly controls and labels.
 - Voice Control-friendly buttons and navigation.
@@ -56,7 +58,7 @@ Planned accessibility support includes:
 
 ## Apple Watch And Health
 
-The Apple Watch app is planned as the main workout runtime.
+The independent Apple Watch app can serve as the main workout runtime.
 
 - Start, pause, resume, skip, and end workouts from the watch.
 - Use Watch haptics for interval transitions and countdowns.
@@ -104,15 +106,67 @@ The paid launch version should feel complete without requiring additional purcha
 
 ## Privacy
 
-VO2Cue is planned to be private by default.
+VO2Cue is private by default. The complete [Privacy Policy](https://greggroll.github.io/vo2cue/) explains the app's data handling and HealthKit use.
 
 - No account required.
 - No ads.
 - No third-party analytics.
 - No backend required for V1.
-- Health data stays on device and in Apple Health according to the user's permissions.
+- Workout profiles and history stay in the app's local storage.
+- Health data is accessed only with permission and stays on the user's devices and in Apple Health.
+- iPhone and Apple Watch exchange profiles and completed workout records directly through Apple's WatchConnectivity framework.
+- Users can revoke Health access in Apple settings and delete local history from the app.
 
 ## Development Status
 
-This repository currently contains the public product plan only. App code, project structure, design assets, and implementation details will be added in later commits.
+V1 is implemented as a native SwiftUI project for iOS 17+ and watchOS 10+. Version 1.0, build 1 was uploaded to TestFlight and reached Apple's `VALID` processing state on August 24, 2026.
 
+The current build includes:
+
+- The classic 35-minute Norwegian 4x4 profile, plus create, edit, duplicate, and delete support for custom profiles.
+- Custom warmup, work, recovery, repeat count, optional cooldown, countdown length, activity type, cue labels, haptics, tones, voice, and halfway cues.
+- A wall-clock-based workout engine with start, pause, resume, skip, early end, phase transitions, countdowns, and completion handling.
+- An independent Apple Watch app with haptic-first cues, live controls, HealthKit workout sessions, and live heart rate when permission is available.
+- WatchConnectivity profile sync from iPhone and completed-session transfer back to iPhone.
+- Optional HealthKit workout saving with graceful denial and failure handling.
+- Private on-device JSON persistence for profiles and workout history.
+- Accessible SwiftUI controls, Dynamic Type, VoiceOver descriptions, high-contrast phase labels and icons, reduced-motion behavior, and non-color phase communication.
+- A privacy manifest declaring no tracking or collected data, plus no account, analytics SDK, ads, or backend.
+- Eight unit tests and two UI integration tests covering schedule boundaries, timer state, cue events, profile creation, live workout controls, and history.
+
+## Project Structure
+
+- `VO2Cue/Shared`: workout profiles, phase timeline, runtime, cues, and persistence shared by iOS and watchOS.
+- `VO2Cue/VO2CueApp`: iPhone setup, profile editor, live runtime, history, settings, HealthKit, and WatchConnectivity.
+- `VO2Cue/VO2CueWatch`: independent Watch UI, live HealthKit workout session, heart rate, haptics, and sync.
+- `VO2Cue/VO2CueTests`: deterministic unit tests for the workout engine.
+- `VO2Cue/VO2CueUITests`: end-to-end iPhone UI tests.
+
+## Build And Test
+
+Requirements:
+
+- Xcode 26 or newer.
+- iOS 17+ and watchOS 10+ deployment targets.
+- A development team with HealthKit capability enabled for signed device builds.
+
+Open `VO2Cue.xcodeproj` and run the shared `VO2Cue` scheme. The iPhone app embeds the independent `VO2CueWatch` app.
+
+Command-line checks:
+
+```sh
+xcodebuild \
+  -project VO2Cue.xcodeproj \
+  -scheme VO2Cue \
+  -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.5' \
+  test CODE_SIGNING_ALLOWED=NO
+
+xcodebuild \
+  -project VO2Cue.xcodeproj \
+  -scheme VO2Cue \
+  -configuration Release \
+  -destination 'generic/platform=iOS' \
+  build CODE_SIGNING_ALLOWED=NO
+```
+
+HealthKit cannot be fully exercised without granting permission on a simulator or signed Apple device. Denial is intentionally non-blocking: VO2Cue continues to time workouts and store local history.
