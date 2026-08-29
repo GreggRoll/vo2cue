@@ -1,0 +1,160 @@
+import Foundation
+import OSLog
+import WatchConnectivity
+
+enum WatchProfileSyncStatus: Equatable {
+    case activating
+    case queued
+    case synced
+    case watchUnavailable
+    case watchAppNotInstalled
+    case failed(String)
+
+    var title: String {
+        switch self {
+        case .activating:
+            "Preparing Apple Watch sync…"
+        case .queued:
+            "Latest workouts are queued for Apple Watch."
+        case .synced:
+            "Latest workouts synced to Apple Watch."
+        case .watchUnavailable:
+            "Pair an Apple Watch to sync workouts."
+        case .watchAppNotInstalled:
+            "Install VO2Cue on Apple Watch to sync workouts."
+        case .failed:
+            "Apple Watch sync will retry automatically."
+        }
+    }
+}
+
+@MainActor
+final class PhoneWatchConnectivity: NSObject, WCSessionDelegate {
+    private var recordHandler: ((WorkoutRecord) -> Void)?
+    private var statusHandler: ((WatchProfileSyncStatus) -> Void)?
+    private var pendingRecords: [WorkoutRecord] = []
+    private var latestProfilesPayload: [String: Any]?
+    private var syncStatus: WatchProfileSyncStatus = .activating {
+        didSet { statusHandler?(syncStatus) }
+    }
+
+    private let logger = Logger(subsystem: "com.gregadams.vo2cue", category: "WatchConnectivity")
+
+    override init() {
+        super.init()
+        guard WCSession.isSupported() else {
+            syncStatus = .watchUnavailable
+            return
+        }
+        WCSession.default.delegate = self
+        WCSession.default.activate()
+    }
+
+    func setRecordHandler(_ handler: @escaping (WorkoutRecord) -> Void) {
+        recordHandler = handler
+        pendingRecords.forEach(handler)
+        pendingRecords.removeAll()
+    }
+
+    func setStatusHandler(_ handler: @escaping (WatchProfileSyncStatus) -> Void) {
+        statusHandler = handler
+        handler(syncStatus)
+    }
+
+    func sync(profiles: [WorkoutProfile]) {
+        do {
+            latestProfilesPayload = try WatchConnectivityPayload.encodeProfiles(profiles)
+            flushLatestProfiles()
+        } catch {
+            syncStatus = .failed(error.localizedDescription)
+            logger.error("Could not encode workout profiles: \(error.localizedDescription, privacy: .public)")
+        }
+    }
+
+    private func flushLatestProfiles() {
+        guard WCSession.isSupported(), let payload = latestProfilesPayload else { return }
+        let session = WCSession.default
+
+        guard session.activationState == .activated else {
+            syncStatus = .activating
+            session.activate()
+            return
+        }
+        guard session.isPaired else {
+            syncStatus = .watchUnavailable
+            return
+        }
+        guard session.isWatchAppInstalled else {
+            syncStatus = .watchAppNotInstalled
+            return
+        }
+
+        do {
+            try session.updateApplicationContext(payload)
+            syncStatus = .queued
+        } catch {
+            syncStatus = .failed(error.localizedDescription)
+            logger.error("Could not queue workout profiles: \(error.localizedDescription, privacy: .public)")
+            return
+        }
+
+        guard session.isReachable else { return }
+        session.sendMessage(payload) { [weak self] reply in
+            guard reply["received"] as? Bool == true else { return }
+            Task { @MainActor [weak self] in
+                self?.syncStatus = .synced
+            }
+        } errorHandler: { [weak self] error in
+            self?.logger.debug("Immediate workout sync deferred: \(error.localizedDescription, privacy: .public)")
+        }
+    }
+
+    private func deliver(_ record: WorkoutRecord) {
+        if let recordHandler {
+            recordHandler(record)
+        } else {
+            pendingRecords.append(record)
+        }
+    }
+
+    nonisolated func session(
+        _ session: WCSession,
+        activationDidCompleteWith activationState: WCSessionActivationState,
+        error: (any Error)?
+    ) {
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            if let error {
+                self.syncStatus = .failed(error.localizedDescription)
+                self.logger.error("Watch session activation failed: \(error.localizedDescription, privacy: .public)")
+            } else if activationState == .activated {
+                self.flushLatestProfiles()
+            }
+        }
+    }
+
+    nonisolated func sessionDidBecomeInactive(_ session: WCSession) { }
+
+    nonisolated func sessionDidDeactivate(_ session: WCSession) {
+        session.activate()
+    }
+
+    nonisolated func sessionWatchStateDidChange(_ session: WCSession) {
+        Task { @MainActor [weak self] in
+            self?.flushLatestProfiles()
+        }
+    }
+
+    nonisolated func sessionReachabilityDidChange(_ session: WCSession) {
+        Task { @MainActor [weak self] in
+            self?.flushLatestProfiles()
+        }
+    }
+
+    nonisolated func session(_ session: WCSession, didReceiveUserInfo userInfo: [String: Any] = [:]) {
+        guard let record = WatchConnectivityPayload.decodeRecord(from: userInfo) else { return }
+        Task { @MainActor [weak self] in
+            self?.deliver(record)
+        }
+    }
+}

@@ -2,7 +2,7 @@
 
 VO2Cue is a VO2-focused 4x4 interval coach for Apple Watch, swimming, and eyes-free training.
 
-V1.0 is implemented and running in TestFlight for iOS 17+ and watchOS 10+. Read the [VO2Cue Privacy Policy](https://greggroll.github.io/vo2cue/).
+V1.0 is implemented and running in TestFlight for iOS 17+ and watchOS 10+. The latest release is version 1.0, build 2. Read the [changelog](CHANGELOG.md) and [VO2Cue Privacy Policy](https://greggroll.github.io/vo2cue/).
 
 ## Product Positioning
 
@@ -62,7 +62,9 @@ The independent Apple Watch app can serve as the main workout runtime.
 
 - Start, pause, resume, skip, and end workouts from the watch.
 - Use Watch haptics for interval transitions and countdowns.
+- Sync custom workout profiles with activation-safe delivery, automatic retries, and visible sync status on iPhone.
 - Request HealthKit permissions only when needed.
+- Show progress and a clear result when requesting Health access, including a route to Settings after denial.
 - Save completed workouts to Apple Health.
 - Handle permission denial gracefully.
 
@@ -119,7 +121,7 @@ VO2Cue is private by default. The complete [Privacy Policy](https://greggroll.gi
 
 ## Development Status
 
-V1 is implemented as a native SwiftUI project for iOS 17+ and watchOS 10+. Version 1.0, build 1 was uploaded to TestFlight and reached Apple's `VALID` processing state on August 24, 2026.
+V1 is implemented as a native SwiftUI project for iOS 17+ and watchOS 10+. Version 1.0, build 2 was uploaded to TestFlight and reached Apple's `VALID` processing state on August 28, 2026.
 
 The current build includes:
 
@@ -127,12 +129,12 @@ The current build includes:
 - Custom warmup, work, recovery, repeat count, optional cooldown, countdown length, activity type, cue labels, haptics, tones, voice, and halfway cues.
 - A wall-clock-based workout engine with start, pause, resume, skip, early end, phase transitions, countdowns, and completion handling.
 - An independent Apple Watch app with haptic-first cues, live controls, HealthKit workout sessions, and live heart rate when permission is available.
-- WatchConnectivity profile sync from iPhone and completed-session transfer back to iPhone.
-- Optional HealthKit workout saving with graceful denial and failure handling.
+- Activation-safe WatchConnectivity profile sync from iPhone, immediate acknowledged delivery when reachable, durable queued delivery when disconnected, automatic retries, and completed-session transfer back to iPhone.
+- Optional HealthKit workout saving with accurate authorization state, visible request progress and results, Settings recovery after denial, and graceful failure handling.
 - Private on-device JSON persistence for profiles and workout history.
 - Accessible SwiftUI controls, Dynamic Type, VoiceOver descriptions, high-contrast phase labels and icons, reduced-motion behavior, and non-color phase communication.
 - A privacy manifest declaring no tracking or collected data, plus no account, analytics SDK, ads, or backend.
-- Eight unit tests and two UI integration tests covering schedule boundaries, timer state, cue events, profile creation, live workout controls, and history.
+- Nine unit tests and two UI integration tests covering schedule boundaries, timer state, cue events, Watch profile payloads, profile creation, live workout controls, and history.
 
 ## Project Structure
 

@@ -1,0 +1,32 @@
+[
+  {
+    "activeSeconds" : 2100,
+    "activity" : "highIntensityIntervalTraining",
+    "completed" : true,
+    "endedAt" : "2026-08-24T12:35:00Z",
+    "id" : "AAAAAAAA-AAAA-4AAA-8AAA-AAAAAAAAAAAA",
+    "profileID" : "11111111-1111-4111-8111-111111111111",
+    "profileName" : "Norwegian 4×4",
+    "startedAt" : "2026-08-24T12:00:00Z"
+  },
+  {
+    "activeSeconds" : 2100,
+    "activity" : "swimming",
+    "completed" : true,
+    "endedAt" : "2026-08-20T11:50:00Z",
+    "id" : "BBBBBBBB-BBBB-4BBB-8BBB-BBBBBBBBBBBB",
+    "profileID" : "22222222-2222-4222-8222-222222222222",
+    "profileName" : "Pool 4×4",
+    "startedAt" : "2026-08-20T11:15:00Z"
+  },
+  {
+    "activeSeconds" : 1680,
+    "activity" : "running",
+    "completed" : true,
+    "endedAt" : "2026-08-17T22:28:00Z",
+    "id" : "CCCCCCCC-CCCC-4CCC-8CCC-CCCCCCCCCCCC",
+    "profileID" : "33333333-3333-4333-8333-333333333333",
+    "profileName" : "Treadmill Hills",
+    "startedAt" : "2026-08-17T22:00:00Z"
+  }
+]

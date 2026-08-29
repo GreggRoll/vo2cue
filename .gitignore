@@ -1,0 +1,8 @@
+.DS_Store
+.derived*/
+build/
+DerivedData/
+*.xcresult
+xcuserdata/
+output/app-store-screenshots/*.zip
+output/app-store-screenshots/final 2/

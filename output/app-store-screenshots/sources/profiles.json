@@ -1,0 +1,59 @@
+[
+  {
+    "activity" : "highIntensityIntervalTraining",
+    "cooldownSeconds" : 0,
+    "countdownSeconds" : 3,
+    "cues" : {
+      "halfwayCueEnabled" : true,
+      "hapticsEnabled" : true,
+      "tonesEnabled" : true,
+      "voiceEnabled" : false
+    },
+    "hardCueLabel" : "Sprint",
+    "id" : "11111111-1111-4111-8111-111111111111",
+    "name" : "Norwegian 4×4",
+    "recoveryCueLabel" : "Recover",
+    "recoverySeconds" : 180,
+    "repeatCount" : 4,
+    "warmupSeconds" : 600,
+    "workSeconds" : 240
+  },
+  {
+    "activity" : "swimming",
+    "cooldownSeconds" : 300,
+    "countdownSeconds" : 5,
+    "cues" : {
+      "halfwayCueEnabled" : true,
+      "hapticsEnabled" : true,
+      "tonesEnabled" : false,
+      "voiceEnabled" : false
+    },
+    "hardCueLabel" : "Strong",
+    "id" : "22222222-2222-4222-8222-222222222222",
+    "name" : "Pool 4×4",
+    "recoveryCueLabel" : "Easy",
+    "recoverySeconds" : 180,
+    "repeatCount" : 4,
+    "warmupSeconds" : 600,
+    "workSeconds" : 240
+  },
+  {
+    "activity" : "running",
+    "cooldownSeconds" : 300,
+    "countdownSeconds" : 3,
+    "cues" : {
+      "halfwayCueEnabled" : true,
+      "hapticsEnabled" : true,
+      "tonesEnabled" : true,
+      "voiceEnabled" : true
+    },
+    "hardCueLabel" : "Climb",
+    "id" : "33333333-3333-4333-8333-333333333333",
+    "name" : "Treadmill Hills",
+    "recoveryCueLabel" : "Float",
+    "recoverySeconds" : 120,
+    "repeatCount" : 6,
+    "warmupSeconds" : 480,
+    "workSeconds" : 120
+  }
+]
