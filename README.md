@@ -4,6 +4,8 @@ VO2Cue is a VO2-focused 4x4 interval coach for Apple Watch, swimming, and eyes-f
 
 V1.0 is implemented and running in TestFlight for iOS 17+ and watchOS 10+. The latest release is version 1.0, build 2. Read the [changelog](CHANGELOG.md) and [VO2Cue Privacy Policy](https://greggroll.github.io/vo2cue/).
 
+Explore the [app demo and quick-start guide](https://greggroll.github.io/vo2cue/demo/) or [download VO2Cue on the App Store](https://apps.apple.com/us/app/vo2cue/id6804899072).
+
 ## Product Positioning
 
 VO2Cue helps athletes complete Norwegian-style 4x4 sessions without staring at a clock. The app is designed around Apple Watch haptics first, with optional tones and voice cues for people who train in the pool, on a treadmill, on a bike, or anywhere a visual timer gets in the way.
