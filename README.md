@@ -1,10 +1,20 @@
 # VO2Cue: 4x4 Timer
 
-VO2Cue is a VO2-focused 4x4 interval coach for Apple Watch, swimming, and eyes-free training.
+VO2Cue is an open-source, VO2-focused 4x4 interval coach for Apple Watch, swimming, and eyes-free training. Contributions are welcome!
 
 V1.0 is implemented and running in TestFlight for iOS 17+ and watchOS 10+. The latest release is version 1.0, build 2. Read the [changelog](CHANGELOG.md) and [VO2Cue Privacy Policy](https://greggroll.github.io/vo2cue/).
 
 Explore the [app demo and quick-start guide](https://greggroll.github.io/vo2cue/demo/) or [download VO2Cue on the App Store](https://apps.apple.com/us/app/vo2cue/id6804899072).
+
+## Open Source & Contributor Rewards
+
+VO2Cue is released under the [MIT License](LICENSE). You are free to use, modify, and redistribute the code under its terms.
+
+Help make VO2Cue better. Bug fixes, features, accessibility improvements, documentation, and tests are all welcome. You can also help by reporting bugs or suggesting ideas in [GitHub Issues](https://github.com/GreggRoll/vo2cue/issues).
+
+**Get a free lifetime subscription to VO2Cue when your pull request is accepted and merged.** A successful merge request (MR)—called a pull request (PR) on GitHub—is one reviewed, accepted, and merged by the maintainer. After your PR is merged, ask in the PR thread to arrange your reward; do not post private account or payment details publicly.
+
+Start with the [contribution guide](CONTRIBUTING.md) for the workflow and reward details. For a larger change, open an issue first to discuss the idea.
 
 ## Product Positioning
 
@@ -75,6 +85,8 @@ The independent Apple Watch app can serve as the main workout runtime.
 VO2Cue is planned as a $1.99 paid app on the iOS App Store.
 
 The paid launch version should feel complete without requiring additional purchases. Optional future monetization may include voice packs, tone packs, and advanced workout templates, but the base timer, Apple Watch support, accessibility features, and HealthKit integration should remain part of the core product.
+
+Contributors whose pull requests are accepted and merged receive a **free lifetime subscription to VO2Cue**. See the [contributor reward details](CONTRIBUTING.md#free-lifetime-subscription).
 
 ## Roadmap
 

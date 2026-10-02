@@ -3,3 +3,5 @@
 .hero-art{overflow:hidden}.button{flex-shrink:0}.button strong,.nav-download{white-space:nowrap}@media(max-width:650px){.header nav{gap:10px}.header nav>a[href="#how-to"]{display:none}.actions{flex-wrap:wrap}.button{gap:25px}.orbit{transform:none}}
 
 .app-icon{display:block;width:44px;height:44px;flex-shrink:0;border-radius:10px}
+
+.contribute{border-bottom:1px solid var(--line)}.contributor-reward{background:#e8ebdf;border:1px solid var(--line);border-radius:22px;padding:32px}.contributor-reward h3{margin-top:0;font-size:24px}.contributor-reward p{max-width:800px;color:var(--muted)}.contribute-button{font-size:14px;font-weight:650}.contributor-reward .actions{flex-wrap:wrap;margin-bottom:0}@media(max-width:650px){.contributor-reward{padding:24px}.contributor-reward h3{font-size:21px}.contribute-button{gap:16px}}
